@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage":"/app-form",
+  "homepage": "/app-form",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -13,6 +13,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.13.6",
+    "framer-motion": "^12.40.0",
     "json-server": "^1.0.0-beta.12",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -25,7 +26,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-  "server": "json-server --watch db.json --port 5000"
+    "server": "json-server --watch db.json --port 5000"
   },
   "eslintConfig": {
     "extends": [

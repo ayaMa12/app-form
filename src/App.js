@@ -9,8 +9,7 @@ import { ForgotPassword } from './components/ForgotPassword';
 const LogIn=lazy(()=>import ( './components/Login'));
 const AllAccount=lazy(()=>import ( './components/AllAccount'));
 const ConfirmPass=lazy(()=>import ( './components/ConfirmPass'));
- 
-   function App(){
+    function App(){
     const navigate = useNavigate();
     useEffect(() => {
       const isLoggedIn = localStorage.getItem("isLoggedIn");
