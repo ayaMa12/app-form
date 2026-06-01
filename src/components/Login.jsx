@@ -31,8 +31,7 @@ export default function LogIn() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background:
-          "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
+        background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -52,7 +51,7 @@ export default function LogIn() {
           width: "300px",
           height: "300px",
           borderRadius: "50%",
-          background: "rgba(255,255,255,0.1)",
+          background: "rgba(255,255,255,0.08)",
           top: "10%",
           left: "5%",
           filter: "blur(20px)",
@@ -66,7 +65,7 @@ export default function LogIn() {
           y: [0, 50, 0],
         }}
         transition={{
-          duration: 10,
+          duration: 8,
           repeat: Infinity,
         }}
         style={{
@@ -99,6 +98,49 @@ export default function LogIn() {
           bottom: "-100px",
           left: "35%",
           filter: "blur(30px)",
+        }}
+      />
+
+      {/* Circle 4 */}
+      <motion.div
+        animate={{
+          x: [0, -60, 0],
+          y: [0, -40, 0],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+        }}
+        style={{
+          position: "absolute",
+          bottom: "100px",
+          left: "35%",
+          width: "100px",
+          border: "2px solid red",
+          height: "100px",
+          borderRadius: "50%",
+          filter: "blur(4px)",
+        }}
+      />
+      {/* Circle 5 */}
+      <motion.div
+        animate={{
+          x: [0, -60, 0],
+          y: [0, -50, 0],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+        }}
+        style={{
+          position: "absolute",
+          top: "100px",
+          right: "35%",
+          width: "50px",
+          border: "2px solid yellow",
+          height: "50px",
+          borderRadius: "50%",
+          filter: "blur(4px)",
         }}
       />
 
