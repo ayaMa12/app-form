@@ -28,35 +28,27 @@ function Navbar() {
   const [users, setUsers] = useState([]);
 
   const fileInputRef = useRef(null);
- async function Delete() {
-  const currentUser = JSON.parse(
-    localStorage.getItem("currentUser")
-  );
+  function Delete() {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-  if (!currentUser) {
-    navigate("/app-form");
-    return;
+    if (currentUser) {
+      axios
+        .delete(`http://localhost:5000/users/${currentUser.id}`)
+        .then(() => {
+          localStorage.removeItem("currentUser");
+          localStorage.removeItem("isLoggedIn");
+
+          navigate("/");
+        })
+        .catch(console.log);
+    }
   }
-
-  try {
-    await axios.delete(
-      `http://localhost:5000/users/${currentUser.id}`
-    );
-
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("isLoggedIn");
-
-    navigate("/app-form");
-  } catch (error) {
-    console.log("Delete Error:", error);
-  }
-}
 
   // Logout
   function Logout() {
     localStorage.setItem("isLoggedIn", "false");
 
-    navigate("/app-form");
+    navigate("/");
   }
   // غلق الـ Dialog
   const handleClose = (value) => {

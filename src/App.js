@@ -10,48 +10,60 @@
 // الاستخدام: لازم يكون حول أي مكون lazy.
 // fallback ده اللي المستخدم هيشوفه أثناء تحميل المكون.
 // بدون Suspense → React هيدي Error.
-import { lazy, Suspense, useEffect } from 'react';
-import './App.css';
-import { DataInput } from './components/Data';
-import { AllDataContext } from './context/ContextData';
+import { lazy, Suspense, useEffect } from "react";
+import "./App.css";
+import { DataInput } from "./components/Data";
+import { AllDataContext } from "./context/ContextData";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { Box, CircularProgress } from '@mui/material';
-import { ForgotPassword } from './components/ForgotPassword';
- const Dashbord=lazy(()=>import ( './components/Dashbord'));
-const LogIn=lazy(()=>import ( './components/Login'));
-const AllAccount=lazy(()=>import ( './components/AllAccount'));
-const ConfirmPass=lazy(()=>import ( './components/ConfirmPass'));
-// lazy & suspence fallback لانها بحاجة ال ال suspence لاتعمل من غي ال Lazy لابد من عملهم معا لان ال 
-// suspence  lazy يعمل كفلاف حزل اي مكون 
-    function App(){
-    const navigate = useNavigate();
-    useEffect(() => {
-      const isLoggedIn = localStorage.getItem("isLoggedIn");
-      if (isLoggedIn === "true") {
-        navigate("/Home");
-      }
-      
-    }, [navigate]);
+import { Box, CircularProgress } from "@mui/material";
+import { ForgotPassword } from "./components/ForgotPassword";
+const Dashbord = lazy(() => import("./components/Dashbord"));
+const LogIn = lazy(() => import("./components/Login"));
+const AllAccount = lazy(() => import("./components/AllAccount"));
+const ConfirmPass = lazy(() => import("./components/ConfirmPass"));
+// lazy & suspence fallback لانها بحاجة ال ال suspence لاتعمل من غي ال Lazy لابد من عملهم معا لان ال
+// suspence  lazy يعمل كفلاف حزل اي مكون
+function App() {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn === "true") {
+      navigate("/Home");
+    }
+  }, [navigate]);
 
   return (
     <div className="App">
-     
       <AllDataContext>
-       <Suspense fallback={<Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <Suspense
+          fallback={
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            >
               <CircularProgress />
-            </Box>}>
+            </Box>
+          }
+        >
           <Routes>
-                  <Route path="/app-form" element={ <LogIn /> } />
-                  <Route path="/Login" element={<DataInput />} />
-                  <Route path="/AllAccount" element={<AllAccount />} />
-                  <Route path="/ConfirmPass" element={<ConfirmPass />} />
-                   <Route path="/ForgotPassword" element={<ForgotPassword />} />
-                  <Route path="/Home" element={<Dashbord />} />
+            <Route path="/" element={<LogIn />} />
 
-         </Routes>
-                </Suspense>
-    </AllDataContext>
-      
+            <Route path="/Login" element={<DataInput />} />
+
+            <Route path="/AllAccount" element={<AllAccount />} />
+
+            <Route path="/ConfirmPass" element={<ConfirmPass />} />
+
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
+
+            <Route path="/Home" element={<Dashbord />} />
+          </Routes>
+        </Suspense>
+      </AllDataContext>
     </div>
   );
 }
