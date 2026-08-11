@@ -270,7 +270,7 @@ function Dashbord() {
     if (currentUser && isLoggedIn === "true") {
       setUser(currentUser);
     } else {
-      navigate("/");
+     navigate("/app-form");
     }
   }, [navigate]);
 
@@ -293,7 +293,7 @@ function Dashbord() {
           localStorage.removeItem("currentUser");
           localStorage.removeItem("isLoggedIn");
 
-          navigate("/");
+         navigate("/app-form");
         })
         .catch(console.log);
     }
@@ -303,7 +303,7 @@ function Dashbord() {
   function Logout() {
     localStorage.setItem("isLoggedIn", "false");
 
-    navigate("/");
+   navigate("/app-form");
   }
 
   // فتح اختيار الصورة
