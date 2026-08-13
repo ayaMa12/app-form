@@ -29,21 +29,23 @@ function Navbar() {
 
   const fileInputRef = useRef(null);
   function Delete() {
+    console.log("Delete clicked");
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-
-    if (currentUser) {
-      axios
-        .delete(`http://localhost:5000/users/${currentUser.id}`)
-        .then(() => {
-          localStorage.removeItem("currentUser");
-          localStorage.removeItem("isLoggedIn");
-
-          navigate("/");
-        })
-        .catch(console.log);
+    console.log("currentUser:", currentUser);
+    if (!currentUser) return;
+    if (!window.confirm("Are you sure you want to delete?")) {
+      return;
     }
+    console.log("User confirmed");
+    axios
+      .delete(`http://localhost:5000/users/${currentUser.id}`)
+      .then(() => {
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("isLoggedIn");
+        navigate("/");
+      })
+      .catch((error) => console.log(error));
   }
-
   // Logout
   function Logout() {
     localStorage.setItem("isLoggedIn", "false");
