@@ -297,7 +297,8 @@ function Dashbord() {
       .then(() => {
         localStorage.removeItem("currentUser");
         localStorage.removeItem("isLoggedIn");
-navigate("/app-form/");      })
+        navigate("/");
+      })
       .catch((error) => console.log(error));
   }
 
@@ -305,7 +306,8 @@ navigate("/app-form/");      })
   function Logout() {
     localStorage.setItem("isLoggedIn", "false");
 
-navigate("/app-form/");  }
+    navigate("/");
+  }
 
   // فتح اختيار الصورة
   function handleOpenFile() {
