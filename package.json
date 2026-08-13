@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "homepage": "https://ayama12.github.io/app-form",
   "private": true,
-
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -22,12 +21,29 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-
   "scripts": {
     "start": "concurrently \"npm run server\" \"react-scripts start\"",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "json-server --watch db.json --port 5000"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "gh-pages": "^6.3.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
