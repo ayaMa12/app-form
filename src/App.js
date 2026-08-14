@@ -19,7 +19,7 @@ import { Box, CircularProgress } from "@mui/material";
 import { ForgotPassword } from "./components/ForgotPassword";
 const Dashbord = lazy(() => import("./components/Dashbord"));
 const LogIn = lazy(() => import("./components/Login"));
-const AllAccount = lazy(() => import("./components/AllAccount"));
+import AllAccount from "./components/AllAccount";
 const ConfirmPass = lazy(() => import("./components/ConfirmPass"));
 // lazy & suspence fallback لانها بحاجة ال ال suspence لاتعمل من غي ال Lazy لابد من عملهم معا لان ال
 // suspence  lazy يعمل كفلاف حزل اي مكون
@@ -54,8 +54,7 @@ function App() {
 
             <Route path="/Login" element={<DataInput />} />
 
-            <Route path="/AllAccount" element={<AllAccount />} />
-
+<Route path="/AllAccount" element={<AllAccount />} />
             <Route path="/ConfirmPass" element={<ConfirmPass />} />
 
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
