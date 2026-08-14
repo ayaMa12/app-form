@@ -16,13 +16,18 @@ export default function LogIn() {
       .catch(console.log);
   }, []);
 
-  function Log() {
-    if (users.length === 0) {
-      navigate("/Login");
-    } else {
-      navigate("/AllAccount");
-    }
+function Log() {
+  console.log("users:", users);
+  console.log("users length:", users.length);
+
+  if (users.length === 0) {
+    console.log("Going to Login");
+    navigate("/Login");
+  } else {
+    console.log("Going to AllAccount");
+    navigate("/AllAccount");
   }
+}
 
   return (
     <Box
