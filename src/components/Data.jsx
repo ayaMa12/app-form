@@ -1,5 +1,5 @@
 import { Box, Button, FormLabel } from "@mui/material";
-import { useReducer, useState, useEffect } from "react";
+import { useReducer, useState } from "react";
 import { DataInput2, useData } from "../context/ContextData";
 import { Inputs } from "./Inputs";
 import DataReducer from "../Reducer/DataReducer";
@@ -11,41 +11,40 @@ import axios from "axios";
 
 export function DataInput() {
   const navigate = useNavigate();
+
   const InputData = useData();
   const [state, dispatch] = useReducer(DataReducer, InputData);
+
   const [openPopup, setOpenPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+
   const [input, setInput] = useState({
     userName: "",
     password: "",
     email: "",
     image: "",
   });
-  const [showPassword, setShowPassword] = useState(false);
-  // كل اليوزرز
-  const [users, setUsers] = useState([]);
-  // const AllData = state.map((item) => {
-  //   return (
-  //     <li key={item.id}>
-  //       ({item.id})==={item.userName}==={item.email}
-  //       <br />
-  //       {item.password}
-  //     </li>
-  //   );
-  // });
 
-  async function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const API_URL =
+    "https://6a7f227b3183f5fd884ae93f.mockapi.io/api/v1/users";
+
+  async function CreateAccount() {
+    // 1️⃣ التأكد إن كل البيانات موجودة
     if (!input.userName || !input.password || !input.email) {
-      setPopupMessage("Please fill all field.");
+      setPopupMessage("Please fill all fields.");
       setOpenPopup(true);
       return;
     }
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@&*]).{8,}$/;
+    // 2️⃣ التأكد من قوة الباسورد
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@&*]).{8,}$/;
 
     if (!passwordRegex.test(input.password)) {
       setPopupMessage(
-        "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character (@, &, *).",
+        "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character (@, &, *)."
       );
 
       setOpenPopup(true);
@@ -53,94 +52,110 @@ export function DataInput() {
     }
 
     try {
-      // هل اليوزر موجود بالفعل
-      const response = await axios.get(
-        `http://localhost:5000/users?userName=${input.userName}&password=${input.password}&email=${input.email}`,
+      // 3️⃣ جلب كل المستخدمين من MockAPI
+      const response = await axios.get(API_URL);
+
+      const users = response.data;
+
+      // 4️⃣ التأكد إن الـ username مش مستخدم
+      const userNameExists = users.some(
+        (user) =>
+          user.userName.toLowerCase() === input.userName.toLowerCase()
       );
 
-      // لو موجود → Login
-      if (response.data.length > 0) {
-        const user = response.data[0];
-
-        if (!state.find((u) => u.id === user.id)) {
-          dispatch({ type: "ADD", payload: user });
-        }
-
-        localStorage.setItem("currentUser", JSON.stringify(user));
-
-        localStorage.setItem("isLoggedIn", "true");
-
-        navigate("/Home");
-      } else {
-        // التحقق هل الايميل مستخدم
-        const emailExists = users.find((u) => u.email === input.email);
-
-        if (emailExists) {
-          alert("هذا الايميل مستخدم من قبل");
-          return;
-        }
-
-        // إنشاء حساب جديد
-        const newUser = await axios.post("http://localhost:5000/users", input);
-
-        dispatch({
-          type: "ADD",
-          payload: newUser.data,
-        });
-
-        localStorage.setItem("currentUser", JSON.stringify(newUser.data));
-
-        localStorage.setItem("isLoggedIn", "true");
-
-        navigate("/Home");
+      if (userNameExists) {
+        setPopupMessage("This username is already used.");
+        setOpenPopup(true);
+        return;
       }
+
+      // 5️⃣ التأكد إن الـ email مش مستخدم
+      const emailExists = users.some(
+        (user) =>
+          user.email.toLowerCase() === input.email.toLowerCase()
+      );
+
+      if (emailExists) {
+        setPopupMessage("This email is already used.");
+        setOpenPopup(true);
+        return;
+      }
+
+      // 6️⃣ إنشاء المستخدم
+      const newUser = await axios.post(API_URL, input);
+
+      // 7️⃣ إضافته للـ reducer
+      dispatch({
+        type: "ADD",
+        payload: newUser.data,
+      });
+
+      // 8️⃣ حفظ المستخدم الحالي
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify(newUser.data)
+      );
+
+      localStorage.setItem("isLoggedIn", "true");
+const savedAccounts =
+  JSON.parse(localStorage.getItem("savedAccounts")) || [];
+
+if (!savedAccounts.includes(newUser.data.id)) {
+  savedAccounts.push(newUser.data.id);
+
+  localStorage.setItem(
+    "savedAccounts",
+    JSON.stringify(savedAccounts)
+  );
+}
+      // 9️⃣ الذهاب للـ Home
+      navigate("/Home");
+
+      // 🔟 تنظيف الـ inputs
+      setInput({
+        userName: "",
+        password: "",
+        email: "",
+        image: "",
+      });
     } catch (error) {
       console.log(error);
-    }
 
-    setInput({
-      userName: "",
-      password: "",
-      email: "",
-    });
+      setPopupMessage(
+        "Something went wrong. Please try again."
+      );
+
+      setOpenPopup(true);
+    }
   }
 
   function changeValueName(value) {
-    setInput({ ...input, userName: value });
+    setInput({
+      ...input,
+      userName: value,
+    });
   }
 
   function changeValuePassword(value) {
-    setInput({ ...input, password: value });
+    setInput({
+      ...input,
+      password: value,
+    });
   }
 
   function changeValueEmail(value) {
-    setInput({ ...input, email: value });
+    setInput({
+      ...input,
+      email: value,
+    });
   }
-
-  useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-    if (currentUser && isLoggedIn === "true") {
-      navigate("/Home");
-    }
-  }, [navigate]);
-
-  // جلب كل اليوزرز
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/users")
-      .then((res) => setUsers(res.data))
-      .catch(console.log);
-  }, []);
 
   return (
     <>
-      {/* <ul>{AllData}</ul> */}
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          Login();
+          CreateAccount();
         }}
       >
         <CustomPopup
@@ -160,10 +175,12 @@ export function DataInput() {
             gap: "15px",
             padding: "30px",
             borderRadius: "12px",
-            background: "linear-gradient(135deg, #ffffff, #f0f4f8)",
+            background:
+              "linear-gradient(135deg, #ffffff, #f0f4f8)",
             boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
             textAlign: "start",
             transition: "0.3s",
+
             "&:hover": {
               boxShadow: "0 10px 35px rgba(0,0,0,0.25)",
             },
@@ -179,6 +196,7 @@ export function DataInput() {
           >
             UserName
           </FormLabel>
+
           <DataInput2.Provider
             value={{
               type: "text",
@@ -200,19 +218,27 @@ export function DataInput() {
           >
             Password
           </FormLabel>
+
           <DataInput2.Provider
             value={{
               type: showPassword ? "text" : "password",
               id: "password",
               input: input.password,
               changeValue: changeValuePassword,
+
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
+                    onClick={() =>
+                      setShowPassword((prev) => !prev)
+                    }
                     edge="end"
                   >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}{" "}
+                    {showPassword ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -231,6 +257,7 @@ export function DataInput() {
           >
             Email
           </FormLabel>
+
           <DataInput2.Provider
             value={{
               type: "email",
@@ -250,11 +277,14 @@ export function DataInput() {
               padding: "10px",
               borderRadius: "8px",
               fontWeight: "bold",
-              background: "linear-gradient(135deg, #1976d2, #42a5f5)",
+              background:
+                "linear-gradient(135deg, #1976d2, #42a5f5)",
               textTransform: "none",
               transition: "0.3s",
+
               "&:hover": {
-                background: "linear-gradient(135deg, #1565c0, #1e88e5)",
+                background:
+                  "linear-gradient(135deg, #1565c0, #1e88e5)",
                 transform: "scale(1.03)",
               },
             }}

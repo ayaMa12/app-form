@@ -31,11 +31,20 @@ import { Tooltip, Avatar, Badge ,IconButton} from "@mui/material";
     const [users, setUsers] = useState([]);
   // جلب كل اليوزرز
     useEffect(() => {
-      axios
-        .get("http://localhost:5000/users")
-        .then((res) => setUsers(res.data))
-        .catch(console.log);
-    }, []);
+  const savedAccounts =
+    JSON.parse(localStorage.getItem("savedAccounts")) || [];
+
+  axios
+    .get("https://6a7f227b3183f5fd884ae93f.mockapi.io/api/v1/users")
+    .then((res) => {
+      const savedUsers = res.data.filter((user) =>
+        savedAccounts.includes(user.id)
+      );
+
+      setUsers(savedUsers);
+    })
+    .catch(console.log);
+}, []);
   
   return (
     <div className="all-account">

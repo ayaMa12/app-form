@@ -11,7 +11,7 @@ export default function LogIn() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/users")
+      .get("https://6a7f227b3183f5fd884ae93f.mockapi.io/api/v1/users")
       .then((res) => setUsers(res.data))
       .catch(console.log);
   }, []);
