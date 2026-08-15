@@ -58,16 +58,16 @@ export function DataInput() {
       const users = response.data;
 
       // 4️⃣ التأكد إن الـ username مش مستخدم
-      const userNameExists = users.some(
-        (user) =>
-          user.userName.toLowerCase() === input.userName.toLowerCase()
-      );
+      // const userNameExists = users.some(
+      //   (user) =>
+      //     user.userName.toLowerCase() === input.userName.toLowerCase()
+      // );
 
-      if (userNameExists) {
-        setPopupMessage("This username is already used.");
-        setOpenPopup(true);
-        return;
-      }
+      // if (userNameExists) {
+      //   setPopupMessage("This username is already used.");
+      //   setOpenPopup(true);
+      //   return;
+      // }
 
       // 5️⃣ التأكد إن الـ email مش مستخدم
       const emailExists = users.some(

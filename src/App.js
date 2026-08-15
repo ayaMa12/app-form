@@ -54,7 +54,7 @@ function App() {
 
             <Route path="/Login" element={<DataInput />} />
 
-<Route path="/AllAccount" element={<AllAccount />} />
+           <Route path="/AllAccount" element={<AllAccount />} />
             <Route path="/ConfirmPass" element={<ConfirmPass />} />
 
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
