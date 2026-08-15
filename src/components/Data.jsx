@@ -96,7 +96,8 @@ export function DataInput() {
         JSON.stringify(newUser.data)
       );
 
-      localStorage.setItem("isLoggedIn", "true");
+     localStorage.setItem("isLoggedIn", "true");
+
 const savedAccounts =
   JSON.parse(localStorage.getItem("savedAccounts")) || [];
 
@@ -108,8 +109,12 @@ if (!savedAccounts.includes(newUser.data.id)) {
     JSON.stringify(savedAccounts)
   );
 }
-      // 9️⃣ الذهاب للـ Home
-      navigate("/Home");
+
+console.log("CREATE SUCCESS");
+console.log("newUser:", newUser.data);
+console.log("Going to Home");
+
+navigate("/Home");
 
       // 🔟 تنظيف الـ inputs
       setInput({
