@@ -12,14 +12,17 @@
 // بدون Suspense → React هيدي Error.
 import { lazy, Suspense, useEffect } from "react";
 import "./App.css";
+
 import { DataInput } from "./components/Data";
 import { AllDataContext } from "./context/ContextData";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { Box, CircularProgress } from "@mui/material";
 import { ForgotPassword } from "./components/ForgotPassword";
-const Dashbord = lazy(() => import("./components/Dashbord"));
-const LogIn = lazy(() => import("./components/Login"));
+
+import Dashbord from "./components/Dashbord";
 import AllAccount from "./components/AllAccount";
+
+const LogIn = lazy(() => import("./components/Login"));
 const ConfirmPass = lazy(() => import("./components/ConfirmPass"));
 // lazy & suspence fallback لانها بحاجة ال ال suspence لاتعمل من غي ال Lazy لابد من عملهم معا لان ال
 // suspence  lazy يعمل كفلاف حزل اي مكون
